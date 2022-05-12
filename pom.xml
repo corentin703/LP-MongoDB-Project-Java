@@ -8,12 +8,12 @@
 		<version>2.6.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>fr.coverotNimorin.loanApproval.loanApproval</groupId>
-	<artifactId>accManager</artifactId>
+	<groupId>fr.pangolins</groupId>
+	<artifactId>leProPlusPlus</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 	<name>AccManager</name>
-	<description>Loan approval project in the Cloud Computing course</description>
+	<description>Account manager for the loan approval project in the Cloud Computing course</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
@@ -72,8 +72,13 @@
 			<artifactId>errors-spring-boot-starter</artifactId>
 			<version>1.4.0</version>
 		</dependency>
-	</dependencies>
 
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.1</version>
+		</dependency>
+	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
