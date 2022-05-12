@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class BankAccountRestServiceTests {
-
     private RestTemplate restTemplate;
 
     private final String testName = "Test" + LocalDateTime.now();

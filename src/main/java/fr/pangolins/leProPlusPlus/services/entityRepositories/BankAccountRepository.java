@@ -19,11 +19,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-
 @Service
 @Validated
 public class BankAccountRepository extends BaseRepository {
-
     private final DatabaseService databaseService;
 
     public BankAccountRepository(DatabaseService databaseService) {
