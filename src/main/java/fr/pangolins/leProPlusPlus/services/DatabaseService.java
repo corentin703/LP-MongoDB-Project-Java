@@ -1,4 +1,4 @@
-package fr.pangolins.leProPlusPlus.services.entityRepositories;
+package fr.pangolins.leProPlusPlus.services;
 
 import fr.pangolins.leProPlusPlus.exceptions.database.DatabaseNoUrlException;
 import org.springframework.core.env.Environment;
