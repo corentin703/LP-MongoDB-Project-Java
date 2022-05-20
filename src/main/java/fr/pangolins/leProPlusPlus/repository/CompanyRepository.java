@@ -1,6 +1,6 @@
-package fr.pangolins.leProPlusPlus.services.entityRepositories;
+package fr.pangolins.leProPlusPlus.repository;
 
-import fr.pangolins.leProPlusPlus.entities.Company;
+import fr.pangolins.leProPlusPlus.domain.entities.Company;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

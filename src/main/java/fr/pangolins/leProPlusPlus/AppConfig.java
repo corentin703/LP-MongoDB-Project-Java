@@ -10,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class AppConfig {
-
     private final Environment env;
 
     public AppConfig(Environment env) {

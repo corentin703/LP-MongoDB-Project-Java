@@ -7,12 +7,14 @@ import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.Stack;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class CompaniesRestServiceTests {
+public class CompaniesControllerTests {
     private RestTemplate restTemplate;
     private String url;
 
@@ -25,5 +27,10 @@ public class CompaniesRestServiceTests {
     public void beforeEach() {
         url = "http://localhost:" + port + "/companies";
         restTemplate = new RestTemplate();
+    }
+
+    @Test
+    public void stubTest() {
+        assertTrue(true);
     }
 }

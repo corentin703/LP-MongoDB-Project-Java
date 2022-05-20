@@ -1,4 +1,4 @@
-package fr.pangolins.leProPlusPlus.restservice;
+package fr.pangolins.leProPlusPlus.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @Controller
 @RequestMapping("/companies")
-public class CompaniesRestService {
+public class CompaniesController {
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<String> getAll() {
         return new ResponseEntity<>("Bonjour", HttpStatus.OK);

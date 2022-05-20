@@ -1,4 +1,4 @@
-package fr.pangolins.leProPlusPlus.exceptions.database;
+package fr.pangolins.leProPlusPlus.domain.exception.database;
 
 import me.alidg.errors.annotation.ExceptionMapping;
 import org.springframework.http.HttpStatus;

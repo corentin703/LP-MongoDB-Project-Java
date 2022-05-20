@@ -1,4 +1,4 @@
-package fr.pangolins.leProPlusPlus.entities;
+package fr.pangolins.leProPlusPlus.domain.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
