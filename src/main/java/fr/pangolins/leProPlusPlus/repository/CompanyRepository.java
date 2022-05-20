@@ -9,7 +9,6 @@ import java.util.List;
 
 public interface CompanyRepository extends MongoRepository<Company, ObjectId> {
 
-//    @Query(fields="{'id' : 1, 'name' : 1, 'notices':  1, 'type':  1}")
-//    List<Company> findAll();
+
 
 }
