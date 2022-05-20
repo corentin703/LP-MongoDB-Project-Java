@@ -1,14 +1,14 @@
 package fr.pangolins.leProPlusPlus.domain.entities;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
-
 @Document("companies")
 public class Company {
     @Id
-    private String id;
+    private ObjectId id;
     private String name;
     private List<Notice> notices;
     private CompanyType type;
@@ -23,11 +23,11 @@ public class Company {
         this.type = type;
     }
 
-    public String getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
