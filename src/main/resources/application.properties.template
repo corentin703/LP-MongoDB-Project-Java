@@ -1,8 +1,14 @@
-cors.origin=*
+# PC Externe
 spring.data.mongodb.uri=mongodb://proplusplus:Licence2022+@localhost:27017/proplusplus
 spring.data.mongodb.database=proplusplus
 
+# PC IUT
+#spring.data.mongodb.uri=mongodb://proplusplus:Licence2022+@20.234.144.102:27017/proplusplus
+#spring.data.mongodb.database=proplusplus
+
+# CleverCloud
 #spring.data.mongodb.uri=mongodb://uak2x5e5iwbdic1ux6pd:cQUBaLzoTU5M5pkmCTXF@b7o3pzbrxpyhfdr-mongodb.services.clever-cloud.com:27017/b7o3pzbrxpyhfdr
 #spring.data.mongodb.database=b7o3pzbrxpyhfdr
 
+cors.origin=*
 server.port=${PORT:8080}
