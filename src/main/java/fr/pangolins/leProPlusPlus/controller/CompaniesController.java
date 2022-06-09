@@ -5,6 +5,8 @@ import fr.pangolins.leProPlusPlus.domain.entities.CompanyType;
 import fr.pangolins.leProPlusPlus.domain.exception.entities.EntityNotFoundException;
 import fr.pangolins.leProPlusPlus.domain.exception.entities.InvalidObjectIdException;
 import fr.pangolins.leProPlusPlus.repository.CompanyRepository;
+import fr.pangolins.leProPlusPlus.requests.companies.CreateCompanyRequest;
+import fr.pangolins.leProPlusPlus.requests.companies.EditCompanyRequest;
 import fr.pangolins.leProPlusPlus.responses.CompanyResponse;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
@@ -55,25 +57,31 @@ public class CompaniesController {
             HttpStatus.OK
         );
     }
-//
+
     @PostMapping
-    public ResponseEntity<CompanyResponse> create(@RequestParam("name") String name) {
+    public ResponseEntity<CompanyResponse> create(@RequestBody CreateCompanyRequest request) {
         Company newCompany = new Company();
-        newCompany.setName(name);
+        newCompany.setName(request.getName());
+        newCompany.setType(request.getType());
 
-        newCompany = companyRepository.insert(newCompany);
+        try {
+            newCompany = companyRepository.insert(newCompany);
 
-        return new ResponseEntity<>(
-            new CompanyResponse(newCompany),
-            HttpStatus.CREATED
-        );
+            return new ResponseEntity<>(
+                    new CompanyResponse(newCompany),
+                    HttpStatus.CREATED
+            );
+        } catch (Exception e) {
+            System.out.println(e);
+            throw e;
+        }
+
     }
-//
+
     @PutMapping("/{id}")
     public ResponseEntity<CompanyResponse> update(
-            @PathVariable String id,
-            @RequestParam("name") String name,
-            @RequestParam("companyType") CompanyType companyType
+        @PathVariable String id,
+        @RequestBody EditCompanyRequest request
     ) {
         Optional<Company> company;
 
@@ -89,13 +97,18 @@ public class CompaniesController {
 
         Company updatedCompany = company.get();
 
-        updatedCompany.setName(name);
-        updatedCompany.setType(companyType);
+        if (request.getName() != null) {
+            updatedCompany.setName(request.getName());
+        }
+
+        if (request.getType() != null) {
+            updatedCompany.setType(request.getType());
+        }
 
         companyRepository.save(updatedCompany);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-//
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         Optional<Company> company;
