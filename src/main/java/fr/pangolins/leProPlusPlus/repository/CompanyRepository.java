@@ -12,4 +12,5 @@ public interface CompanyRepository extends MongoRepository<Company, ObjectId> {
 
    Optional<Company> findByName(String name);
 
+
 }
