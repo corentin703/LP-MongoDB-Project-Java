@@ -9,6 +9,7 @@ import fr.pangolins.leProPlusPlus.requests.companies.CreateCompanyRequest;
 import fr.pangolins.leProPlusPlus.requests.companies.EditCompanyRequest;
 import fr.pangolins.leProPlusPlus.responses.CompanyResponse;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -55,6 +56,29 @@ public class CompaniesController {
         return new ResponseEntity<>(
             new CompanyResponse(company.get()),
             HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{name}")
+    public ResponseEntity<CompanyResponse> getByName(@PathVariable String name) {
+        Optional<Company> company;
+        List<Company> companyList;
+
+        try {
+
+//            company = companyRepository.findById(new ObjectId(id));
+//            companyList = companyRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
+            company = companyRepository.findByName(name);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectIdException(name);
+        }
+
+        if (company.isEmpty())
+            throw new EntityNotFoundException(name);
+
+        return new ResponseEntity<>(
+                new CompanyResponse(company.get()),
+                HttpStatus.OK
         );
     }
 
