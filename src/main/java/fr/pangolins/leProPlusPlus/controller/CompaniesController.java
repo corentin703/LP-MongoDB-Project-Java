@@ -59,7 +59,7 @@ public class CompaniesController {
         );
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("name/{name}")
     public ResponseEntity<CompanyResponse> getByName(@PathVariable String name) {
         Optional<Company> company;
         List<Company> companyList;
