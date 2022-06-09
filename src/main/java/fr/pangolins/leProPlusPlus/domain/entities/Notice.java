@@ -13,7 +13,7 @@ public class Notice {
     private String title;
     private String content;
     private float mark;
-    @DBRef()
+    @DBRef
     private Company author;
 
     public Notice() {
