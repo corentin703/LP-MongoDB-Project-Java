@@ -67,7 +67,12 @@
 			<artifactId>errors-spring-boot-starter</artifactId>
 			<version>1.4.0</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 	<build>
 		<plugins>
 			<plugin>
