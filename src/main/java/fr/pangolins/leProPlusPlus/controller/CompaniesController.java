@@ -1,21 +1,19 @@
 package fr.pangolins.leProPlusPlus.controller;
 
 import fr.pangolins.leProPlusPlus.domain.entities.Company;
-import fr.pangolins.leProPlusPlus.domain.entities.CompanyType;
 import fr.pangolins.leProPlusPlus.domain.exception.entities.EntityNotFoundException;
 import fr.pangolins.leProPlusPlus.domain.exception.entities.InvalidObjectIdException;
+import fr.pangolins.leProPlusPlus.domain.schemaVersioning.CompanySchemaVersioning;
 import fr.pangolins.leProPlusPlus.repository.CompanyRepository;
 import fr.pangolins.leProPlusPlus.requests.companies.CreateCompanyRequest;
 import fr.pangolins.leProPlusPlus.requests.companies.EditCompanyRequest;
 import fr.pangolins.leProPlusPlus.responses.CompanyResponse;
 import org.bson.types.ObjectId;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,14 +23,17 @@ import java.util.stream.Collectors;
 @RequestMapping("/companies")
 public class CompaniesController {
     private final CompanyRepository companyRepository;
+    private final CompanySchemaVersioning companySchemaVersioning;
 
-    public CompaniesController(CompanyRepository companyRepository) {
+    public CompaniesController(CompanyRepository companyRepository, CompanySchemaVersioning companySchemaVersioning) {
         this.companyRepository = companyRepository;
+        this.companySchemaVersioning = companySchemaVersioning;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<List<CompanyResponse>> getAll() {
         List<Company> companies = companyRepository.findAll();
+        companies.forEach(companySchemaVersioning::run);
 
         return new ResponseEntity<>(
             companies.stream().map(CompanyResponse::new).collect(Collectors.toList()),
@@ -52,6 +53,8 @@ public class CompaniesController {
 
         if (company.isEmpty())
             throw new EntityNotFoundException(id);
+
+        companySchemaVersioning.run(company.get());
 
         return new ResponseEntity<>(
             new CompanyResponse(company.get()),

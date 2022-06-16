@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document("notices")
-public class Notice {
+public class Notice extends EntityBase {
     @Id
     private ObjectId id;
 

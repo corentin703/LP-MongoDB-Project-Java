@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
 @Document("companies")
-public class Company {
+public class Company extends EntityBase {
     @Id
     private ObjectId id;
     private String name;
