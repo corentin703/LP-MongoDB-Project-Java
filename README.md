@@ -37,8 +37,14 @@ url : /companies
         <tr>
             <td style="text-align:center;">/{id}</td>
             <td style="text-align:center;">GET</td>
-            <td></td>
-            <td>Permet de récupérer les informations d'une compagnie</td>
+            <td> - String id </td>
+            <td>Permet de récupérer les informations d'une compagnie à partir de son ID</td>
+        </tr>
+        <tr>
+            <td style="text-align:center;">/{id}</td>
+            <td style="text-align:center;">GET</td>
+            <td> - String name </td>
+            <td>Permet de récupérer les informations d'une compagnie à partir de son nom</td>
         </tr>
         <tr>
             <td style="text-align:center;">/</td>
@@ -52,7 +58,7 @@ url : /companies
             <td>
                 - String name<br>
                 - CompanyType companyType</td>
-            <td>Permet de modifier une compagnie en indiquant </td>
+            <td>Permet de modifier une compagnie en indiquant son ID et les données modifiées</td>
         </tr>
     </tbody>
 </table>
