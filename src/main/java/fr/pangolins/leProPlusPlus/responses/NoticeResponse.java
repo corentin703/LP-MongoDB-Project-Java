@@ -13,7 +13,9 @@ public class NoticeResponse {
     }
 
     public NoticeResponse(Notice notice) {
-        id = notice.getId().toHexString();
+        if (notice.getId() != null)
+            id = notice.getId().toHexString();
+
         title = notice.getTitle();
         content = notice.getContent();
         mark = notice.getMark();
