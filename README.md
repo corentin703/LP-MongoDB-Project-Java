@@ -66,12 +66,12 @@ url : /companies
                 - EditCompanyRequest request</td>
             <td>Permet de modifier une compagnie en indiquant son ID et les les données à modifier via une EditCompanyRequest</td>
         </tr>
-
         <tr>
             <td style="text-align:center;">/{id}</td>
             <td style="text-align:center;">DELETE</td>
             <td>
                 - String id
+            </td>
             <td>Permet de supprimer une compagnie en indiquant son ID</td>
         </tr>
     </tbody>
@@ -129,7 +129,7 @@ url : /notices
             <td style="text-align:center;">DELETE</td>
             <td>
                 - String id
-            <td>Permet de supprimer une compagnie en indiquant son ID</td>
+            <td>Permet de supprimer une notice en indiquant son ID</td>
         </tr>
     </tbody>
 </table>
