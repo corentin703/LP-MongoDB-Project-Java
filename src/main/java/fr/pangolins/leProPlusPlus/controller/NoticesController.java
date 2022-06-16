@@ -4,11 +4,11 @@ import fr.pangolins.leProPlusPlus.domain.entities.Company;
 import fr.pangolins.leProPlusPlus.domain.entities.Notice;
 import fr.pangolins.leProPlusPlus.domain.exception.entities.EntityNotFoundException;
 import fr.pangolins.leProPlusPlus.domain.exception.entities.InvalidObjectIdException;
+import fr.pangolins.leProPlusPlus.domain.schemaVersioning.NoticeSchemaVersioning;
 import fr.pangolins.leProPlusPlus.repository.CompanyRepository;
 import fr.pangolins.leProPlusPlus.repository.NoticeRepository;
 import fr.pangolins.leProPlusPlus.requests.notices.CreateNoticeRequest;
 import fr.pangolins.leProPlusPlus.requests.notices.EditNoticeRequest;
-import fr.pangolins.leProPlusPlus.responses.CompanyResponse;
 import fr.pangolins.leProPlusPlus.responses.NoticeResponse;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
@@ -26,30 +26,30 @@ import java.util.stream.Collectors;
 public class NoticesController {
     private final NoticeRepository noticeRepository;
     private final CompanyRepository companyRepository;
+    private final NoticeSchemaVersioning noticeSchemaVersioning;
 
     public NoticesController(
         NoticeRepository noticeRepository,
-        CompanyRepository companyRepository
-    ) {
+        CompanyRepository companyRepository,
+        NoticeSchemaVersioning noticeSchemaVersioning) {
         this.noticeRepository = noticeRepository;
         this.companyRepository = companyRepository;
+        this.noticeSchemaVersioning = noticeSchemaVersioning;
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<List<NoticeResponse>> getAll() {
         List<Notice> notices = noticeRepository.findAll();
+        notices.forEach(noticeSchemaVersioning::run);
 
         return new ResponseEntity<>(
                 notices.stream().map(NoticeResponse::new).collect(Collectors.toList()),
                 HttpStatus.OK
         );
     }
-    //
-
 
     @GetMapping("/{id}")
     public ResponseEntity<NoticeResponse> getById(@PathVariable String id){
-
         Optional<Notice> notice;
 
         try {
@@ -60,6 +60,8 @@ public class NoticesController {
 
         if (notice.isEmpty())
             throw new EntityNotFoundException(id);
+
+        noticeSchemaVersioning.run(notice.get());
 
         return new ResponseEntity<>(
                 new NoticeResponse(notice.get()),
@@ -80,6 +82,8 @@ public class NoticesController {
         if (notice.isEmpty())
             throw new EntityNotFoundException(title);
 
+        noticeSchemaVersioning.run(notice.get());
+
         return new ResponseEntity<>(
                 new NoticeResponse(notice.get()),
                 HttpStatus.OK
@@ -92,20 +96,12 @@ public class NoticesController {
         Notice newNotice = new Notice();
         newNotice.setTitle(request.getTitle());
 
-        try {
-            newNotice = noticeRepository.insert(newNotice);
+        newNotice = noticeRepository.insert(newNotice);
 
-            return new ResponseEntity<>(
-//                    new CompanyResponse(newNotice),
-//                    HttpStatus.CREATED
-                    new NoticeResponse(newNotice),
-                    HttpStatus.CREATED
-            );
-        } catch (Exception e) {
-            System.out.println(e);
-            throw e;
-        }
-//        return new ResponseEntity<>(noticeRepository.insert(newNotice), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                new NoticeResponse(newNotice),
+                HttpStatus.CREATED
+        );
     }
     @PutMapping("/{id}")
     public ResponseEntity<NoticeResponse> update(
@@ -145,6 +141,7 @@ public class NoticesController {
             updatedNotice.setMark(request.getMark());
         }
 
+        noticeSchemaVersioning.run(updatedNotice);
         noticeRepository.save(updatedNotice);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
