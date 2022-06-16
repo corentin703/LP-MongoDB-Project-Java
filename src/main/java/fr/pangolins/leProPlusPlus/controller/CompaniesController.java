@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 @Validated
 @RestController
 @RequestMapping("/companies")
@@ -30,6 +31,10 @@ public class CompaniesController {
         this.companySchemaVersioning = companySchemaVersioning;
     }
 
+    /**
+     * GetAll permet de recupérer l'ensemble des companies via des  CompanyResponses
+     * @return une ResponseEntity avec la liste des CompanyResponse
+     */
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<List<CompanyResponse>> getAll() {
         List<Company> companies = companyRepository.findAll();
@@ -41,6 +46,11 @@ public class CompaniesController {
         );
     }
 
+    /**
+     * GetById permet de recupérer une comapny via une companyResponse suivant un id donné
+     * @return une ResponseEntity avec la CompanyResponse associée
+     * @param id l'id de la comany qu'on souhaite récupérer
+     */
     @GetMapping("/{id}")
     public ResponseEntity<CompanyResponse> getById(@PathVariable String id) {
         Optional<Company> company;
@@ -62,6 +72,11 @@ public class CompaniesController {
         );
     }
 
+    /**
+     * GetByName permet de recupérer une company via une companyResponse suivant un nom donné
+     * @return une ResponseEntity avec la CompanyResponse correspondante au nom fourni
+     * @param name le nom de la comany qu'on souhaite récupérer
+     */
     @GetMapping("name/{name}")
     public ResponseEntity<CompanyResponse> getByName(@PathVariable String name) {
         Optional<Company> company;
@@ -85,6 +100,11 @@ public class CompaniesController {
         );
     }
 
+    /**
+     * Create permet de créer une company suivant une company request donnée
+     * @return une ResponseEntity avec la CompanyResponse créée
+     * @param request la request comprenant le nom et le type de la company qu'on souhaite créer
+     */
     @PostMapping
     public ResponseEntity<CompanyResponse> create(@RequestBody CreateCompanyRequest request) {
         Company newCompany = new Company();
@@ -105,6 +125,12 @@ public class CompaniesController {
 
     }
 
+    /**
+     * Update permet de mettre à jour une company
+     * @param id identifiant de la company
+     * @param request contient le nouveau nom et type de la company à mettre à jour
+     * @return une ResponseEntity avec le code de retour uniquement
+     */
     @PutMapping("/{id}")
     public ResponseEntity<CompanyResponse> update(
         @PathVariable String id,
@@ -136,6 +162,11 @@ public class CompaniesController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Delete permet de supprimer une company
+     * @param id identifiant de la company à supprimer
+     * @return une ResponseEntity avec le code de retour uniquement
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         Optional<Company> company;
