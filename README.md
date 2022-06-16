@@ -47,10 +47,10 @@ url : /companies
             <td>Permet de récupérer les informations d'une compagnie à partir de son name</td>
         </tr>
         <tr>
-            <td style="text-align:center;">/{id}</td>
+            <td style="text-align:center;">/search/{name}</td>
             <td style="text-align:center;">GET</td>
             <td>String name </td>
-            <td>Permet de récupérer les informations d'une compagnie à partir de son nom</td>
+            <td>Permet de lister les compagnies ayant un nom contenant la chaine passée en paramètre</td>
         </tr>
         <tr>
             <td style="text-align:center;">/{id}</td>

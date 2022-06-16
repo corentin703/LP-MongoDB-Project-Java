@@ -99,6 +99,28 @@ public class CompaniesController {
     }
 
     /**
+     * searchByName permet de rechercher une liste de compagnies correspondant en partie au paramètre
+     *
+     * @param name
+     * @return ResponseEntity<List<CompanyResponse>>
+     */
+    @GetMapping("search/{name}")
+    public ResponseEntity<List<CompanyResponse>> searchByName(@PathVariable String name) {
+        List<Company> companies;
+
+        try {
+            companies = companyRepository.findCompaniesForName(name);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectIdException(name);
+        }
+
+        return new ResponseEntity<>(
+                companies.stream().map(CompanyResponse::new).collect(Collectors.toList()),
+                HttpStatus.OK
+        );
+    }
+
+    /**
      * Create permet de créer une company suivant une company request donnée
      * @return une ResponseEntity avec la CompanyResponse créée
      * @param request la request comprenant le nom et le type de la company qu'on souhaite créer
