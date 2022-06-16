@@ -6,12 +6,12 @@
 
 [Liens / Notation](http://clientserveur.milka.ovh/)
 
-Project Goal : Permettre la mise en relation d'entreprises entre elles en le regroupant sur une plateforme commune où elles 
+-   Project Goal : Permettre la mise en relation d'entreprises entre elles en le regroupant sur une plateforme commune où elles 
 pourront échanger des avis entre elles
-Project Features : 
--   CRUD pour les entreprises (company)
--   CRUD pour les notes (notice)
--   Ajouter des notes aux entreprises
+-   Project Features : 
+    -   CRUD pour les entreprises (company)
+    -   CRUD pour les notes (notice)
+    -   Ajouter des notes aux entreprises
 
 ## Services
 
