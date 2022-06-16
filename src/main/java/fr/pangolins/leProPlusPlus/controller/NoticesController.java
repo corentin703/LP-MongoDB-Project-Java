@@ -8,6 +8,7 @@ import fr.pangolins.leProPlusPlus.repository.CompanyRepository;
 import fr.pangolins.leProPlusPlus.repository.NoticeRepository;
 import fr.pangolins.leProPlusPlus.requests.notices.CreateNoticeRequest;
 import fr.pangolins.leProPlusPlus.requests.notices.EditNoticeRequest;
+import fr.pangolins.leProPlusPlus.responses.CompanyResponse;
 import fr.pangolins.leProPlusPlus.responses.NoticeResponse;
 import org.bson.types.ObjectId;
 import org.springframework.http.HttpStatus;
@@ -67,7 +68,7 @@ public class NoticesController {
     }
 
     @GetMapping("title/{title}")
-    public ResponseEntity<?> getByTitle(@PathVariable String title){
+    public ResponseEntity<NoticeResponse> getByTitle(@PathVariable String title){
         Optional<Notice> notice;
 
         try {
@@ -87,17 +88,38 @@ public class NoticesController {
 
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody CreateNoticeRequest request) {
+    public ResponseEntity<NoticeResponse> create(@RequestBody CreateNoticeRequest request) {
         Notice newNotice = new Notice();
         newNotice.setTitle(request.getTitle());
-        return new ResponseEntity<>(noticeRepository.insert(newNotice), HttpStatus.CREATED);
+
+        try {
+            newNotice = noticeRepository.insert(newNotice);
+
+            return new ResponseEntity<>(
+//                    new CompanyResponse(newNotice),
+//                    HttpStatus.CREATED
+                    new NoticeResponse(newNotice),
+                    HttpStatus.CREATED
+            );
+        } catch (Exception e) {
+            System.out.println(e);
+            throw e;
+        }
+//        return new ResponseEntity<>(noticeRepository.insert(newNotice), HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(
+    public ResponseEntity<NoticeResponse> update(
         @PathVariable String id,
         @RequestBody EditNoticeRequest request
     ) {
-        Optional<Notice> notice = noticeRepository.findById(new ObjectId(id));
+        Optional<Notice> notice;
+
+        try {
+            notice = noticeRepository.findById(new ObjectId(id));
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectIdException(id);
+        }
+
         if (notice.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
