@@ -47,9 +47,9 @@ public class CompaniesController {
     }
 
     /**
-     * GetById permet de recupérer une comapny via une companyResponse suivant un id donné
+     * GetById permet de récupérer une company via une companyResponse suivant un id donné
      * @return une ResponseEntity avec la CompanyResponse associée
-     * @param id l'id de la comany qu'on souhaite récupérer
+     * @param id l'id de la company qu'on souhaite récupérer
      */
     @GetMapping("/{id}")
     public ResponseEntity<CompanyResponse> getById(@PathVariable String id) {
@@ -73,9 +73,9 @@ public class CompaniesController {
     }
 
     /**
-     * GetByName permet de recupérer une company via une companyResponse suivant un nom donné
+     * GetByName permet de récupérer une company via une companyResponse suivant un nom donné
      * @return une ResponseEntity avec la CompanyResponse correspondante au nom fourni
-     * @param name le nom de la comany qu'on souhaite récupérer
+     * @param name le nom de la company que l'on souhaite récupérer
      */
     @GetMapping("name/{name}")
     public ResponseEntity<CompanyResponse> getByName(@PathVariable String name) {
@@ -99,10 +99,10 @@ public class CompaniesController {
     }
 
     /**
-     * Recherche de compagnies par nom
-     *
-     * @param name
-     * @return ResponseEntity<List<CompanyResponse>>
+     * Recherche de compagnies correspondant au nom partiel ou complet passé en paramètres.
+     * La recherche est insensible à la casse.
+     * @param name le nom partiel ou complet des companies recherchées
+     * @return ResponseEntity<List<CompanyResponse>> une liste de companies correspondant à la chaîne passée en paramètres
      */
     @GetMapping("search/{name}")
     public ResponseEntity<List<CompanyResponse>> searchByName(@PathVariable String name) {
