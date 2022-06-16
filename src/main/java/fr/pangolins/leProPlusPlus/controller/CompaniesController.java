@@ -83,6 +83,28 @@ public class CompaniesController {
         );
     }
 
+    /**
+     * Recherche de compagnies par nom
+     *
+     * @param name
+     * @return ResponseEntity<List<CompanyResponse>>
+     */
+    @GetMapping("search/{name}")
+    public ResponseEntity<List<CompanyResponse>> searchByName(@PathVariable String name) {
+        List<Company> companies;
+
+        try {
+            companies = companyRepository.findCompaniesForName(name);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectIdException(name);
+        }
+
+        return new ResponseEntity<>(
+                companies.stream().map(CompanyResponse::new).collect(Collectors.toList()),
+                HttpStatus.OK
+        );
+    }
+
     @PostMapping
     public ResponseEntity<CompanyResponse> create(@RequestBody CreateCompanyRequest request) {
         Company newCompany = new Company();
