@@ -80,12 +80,8 @@ public class CompaniesController {
     @GetMapping("name/{name}")
     public ResponseEntity<CompanyResponse> getByName(@PathVariable String name) {
         Optional<Company> company;
-        List<Company> companyList;
 
         try {
-
-//            company = companyRepository.findById(new ObjectId(id));
-//            companyList = companyRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
             company = companyRepository.findByName(name);
         } catch (IllegalArgumentException e) {
             throw new InvalidObjectIdException(name);
@@ -93,6 +89,8 @@ public class CompaniesController {
 
         if (company.isEmpty())
             throw new EntityNotFoundException(name);
+
+        companySchemaVersioning.run(company.get());
 
         return new ResponseEntity<>(
                 new CompanyResponse(company.get()),
@@ -111,18 +109,12 @@ public class CompaniesController {
         newCompany.setName(request.getName());
         newCompany.setType(request.getType());
 
-        try {
-            newCompany = companyRepository.insert(newCompany);
+        newCompany = companyRepository.insert(newCompany);
 
-            return new ResponseEntity<>(
-                    new CompanyResponse(newCompany),
-                    HttpStatus.CREATED
-            );
-        } catch (Exception e) {
-            System.out.println(e);
-            throw e;
-        }
-
+        return new ResponseEntity<>(
+                new CompanyResponse(newCompany),
+                HttpStatus.CREATED
+        );
     }
 
     /**
@@ -158,6 +150,7 @@ public class CompaniesController {
             updatedCompany.setType(request.getType());
         }
 
+        companySchemaVersioning.run(updatedCompany);
         companyRepository.save(updatedCompany);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
