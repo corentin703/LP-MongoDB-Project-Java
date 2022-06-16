@@ -99,7 +99,7 @@ public class CompaniesController {
     }
 
     /**
-     * Recherche de compagnies par nom
+     * searchByName permet de rechercher une liste de compagnies correspondant en partie au paramètre
      *
      * @param name
      * @return ResponseEntity<List<CompanyResponse>>
