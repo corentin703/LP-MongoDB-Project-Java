@@ -37,6 +37,10 @@ public class NoticesController {
         this.noticeSchemaVersioning = noticeSchemaVersioning;
     }
 
+    /**
+     * GetAll permet de recupérer l'ensemble des notices via des NoticeResponse
+     * @return une ResponseEntity avec la liste des NoticeResponse
+     */
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<List<NoticeResponse>> getAll() {
         List<Notice> notices = noticeRepository.findAll();
@@ -48,6 +52,13 @@ public class NoticesController {
         );
     }
 
+    //
+
+    /**
+     * GetById permet de recupérer une NoticeResponse suivant un id donné
+     * @return une ResponseEntity avec la NoticeResponse associée
+     * @param id l'id de la comany qu'on souhaite récupérer
+     */
     @GetMapping("/{id}")
     public ResponseEntity<NoticeResponse> getById(@PathVariable String id){
         Optional<Notice> notice;
@@ -68,7 +79,11 @@ public class NoticesController {
                 HttpStatus.OK
         );
     }
-
+    /**
+     * GetByTitle permet de recupérer une notice via une noticeResponse suivant un tittre donné
+     * @return une ResponseEntity avec la NoticeResponse correspondante au titre fourni
+     * @param title le titre de la notice qu'on souhaite récupérer
+     */
     @GetMapping("title/{title}")
     public ResponseEntity<NoticeResponse> getByTitle(@PathVariable String title){
         Optional<Notice> notice;
@@ -90,7 +105,11 @@ public class NoticesController {
         );
     }
 
-
+    /**
+     * Create permet de créer une notice suivant une notice request donnée
+     * @return une ResponseEntity avec la NoticeResponse créée
+     * @param request la request comprenant les informations d'une notice
+     */
     @PostMapping
     public ResponseEntity<NoticeResponse> create(@RequestBody CreateNoticeRequest request) {
         Notice newNotice = new Notice();
@@ -103,6 +122,13 @@ public class NoticesController {
                 HttpStatus.CREATED
         );
     }
+
+    /**
+     * Update permet de mettre à jour une notice
+     * @param id identifiant de la notice
+     * @param request contient les informations de la notice à mettre à jour
+     * @return une ResponseEntity avec le code de retour uniquement
+     */
     @PutMapping("/{id}")
     public ResponseEntity<NoticeResponse> update(
         @PathVariable String id,
@@ -147,6 +173,11 @@ public class NoticesController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Delete permet de supprimer une notice
+     * @param id identifiant de la notice à supprimer
+     * @return une ResponseEntity avec le code de retour uniquement
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable String id) {
         Optional<Notice> notice;
@@ -165,6 +196,11 @@ public class NoticesController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Depuis un objectId on retourne une company
+     * @param strObjId l'objectId de la company
+     * @return une company
+     */
     private Company findCompanyByStrObjectId(String strObjId) {
         ObjectId objectId = new ObjectId(strObjId);
         Optional<Company> company = companyRepository.findById(objectId);
