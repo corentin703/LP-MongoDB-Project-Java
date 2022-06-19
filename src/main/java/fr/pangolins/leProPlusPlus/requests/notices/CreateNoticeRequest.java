@@ -1,9 +1,19 @@
 package fr.pangolins.leProPlusPlus.requests.notices;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class CreateNoticeRequest {
+    @NotBlank(message = "notice.title.required")
     private String title;
+
+    @NotBlank(message = "notice.content.required")
     private String content;
+
+    @NotNull(message = "notice.mark.required")
     private Float mark;
+
+    @NotBlank(message = "notice.author.required")
     private String authorId;
 
     public CreateNoticeRequest() {
