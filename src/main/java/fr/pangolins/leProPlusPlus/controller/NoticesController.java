@@ -126,6 +126,7 @@ public class NoticesController {
             newNotice.setTitle(request.getTitle());
             newNotice.setContent(request.getContent());
             newNotice.setMark(request.getMark());
+            newNotice.setAuthor(findCompanyByStrObjectId(request.getAuthorId()));
             newNotice = noticeRepository.insert(newNotice);
 
             List<Notice> notices = company.getNotices();
