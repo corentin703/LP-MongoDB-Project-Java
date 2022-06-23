@@ -10,6 +10,7 @@ sur une plateforme commune où elles pourront échanger des avis entre elles.
 - CRUD pour les notes (notice)
 - Ajouter des notes aux entreprises
 
+
 ## Entités
 
 Les classes correspondantes sont définies dans le package ```fr.pangolins.leProPlusPlus.domain.entities```.
@@ -27,125 +28,36 @@ Un avis contient une référence vers l'entreprise / client ayant émit l'avis
 Cette entité ne possède pas de repository dédié : 
 les opérations passent via des pipelines d'agrégation.
 
+
 ## Services / Contrôleurs
 
-Les classes correspondantes sont définies dans le package ```fr.pangolins.leProPlusPlus.domain.entities```.
+Les classes correspondantes sont définies dans le package ```fr.pangolins.leProPlusPlus.controller```.
+Vous trouverez ci-dessous les tableaux récapitulant les différentes routes disponibles
 
-### Entreprise (*Companies*)
-url : /companies
+### Entreprise (```CompaniesController```)
 
-<table>
-    <thead>
-        <tr>
-            <th width="25%">Url</th>
-            <th width="5%">Methode</th>
-            <th width="20%">Paramètre</th>
-            <th width="50%">Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td style="text-align:center;">/</td>
-            <td style="text-align:center;">GET</td>
-            <td></td>
-            <td>Permet de récupérer les informations de toutes les compagnies</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/{id}</td>
-            <td style="text-align:center;">GET</td>
-            <td>String id </td>
-            <td>Permet de récupérer les informations d'une compagnie à partir de son ID</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">name/{name}</td>
-            <td style="text-align:center;">GET</td>
-            <td>String name </td>
-            <td>Permet de récupérer les informations d'une compagnie à partir de son name</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/search/{name}</td>
-            <td style="text-align:center;">GET</td>
-            <td>String name </td>
-            <td>Permet de lister les compagnies ayant un nom contenant la chaine passée en paramètre</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/{id}</td>
-            <td style="text-align:center;">POST</td>
-            <td>
-                - CreateCompanyRequest request
-            <td>Permet de créer une compagnie en indiquant les données via une CreateCompanyRequest</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/</td>
-            <td style="text-align:center;">PUT</td>
-            <td>String id<br>
-                - EditCompanyRequest request</td>
-            <td>Permet de modifier une compagnie en indiquant son ID et les les données à modifier via une EditCompanyRequest</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/{id}</td>
-            <td style="text-align:center;">DELETE</td>
-            <td>
-                - String id
-            </td>
-            <td>Permet de supprimer une compagnie en indiquant son ID</td>
-        </tr>
-    </tbody>
-</table>
+| Url                     | Méthode | Paramètre d'URL | Corp de requête                | Description                                                                                                               |
+|-------------------------|---------|-----------------|--------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| /companies              | GET     |                 | Non                            | Permet de récupérer les informations de toutes les entreprises                                                            |
+| /companies/{id}         | GET     | id: string      | Non                            | Permet de récupérer les informations d'une entreprises à partir de son identifiant                                        |
+| /companies/name/{name}  | GET     | name: string    | Non                            | Permet de récupérer les informations d'une entreprises à partir de son nom                                                |
+| /companies/search/{str} | GET     | str: string     | Non                            | Permet de lister les entreprises ayant un nom contenant la chaîne passée en paramètre                                     |
+| /companies              | POST    |                 | Oui ```CreateCompanyRequest``` | Permet de créer une entreprise en indiquant les données via une ```CreateCompanyRequest```                                |
+| /companies/{id}         | PUT     | id: string      | Oui ```EditCompanyRequest```   | Permet de modifier une entreprise en indiquant son identifiant et les données à modifier via une ```EditCompanyRequest``` |
+| /companies/{id}         | DELETE  | id: string      | Non                            | Permet de supprimer une entreprise en indiquant son identifiant                                                           |
 
-###  Notices
-url : /notices
 
-<table>
-    <thead>
-        <tr>
-            <th width="25%">Url</th>
-            <th width="5%">Methode</th>
-            <th width="20%">Paramètre</th>
-            <th width="50%">Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td style="text-align:center;">/</td>
-            <td style="text-align:center;">GET</td>
-            <td></td>
-            <td>Permet de récupérer les informations de toutes les notices</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/{id}</td>
-            <td style="text-align:center;">GET</td>
-            <td>String id </td>
-            <td>Permet de récupérer les informations d'une notice à partir de son ID</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">titre/{titre}</td>
-            <td style="text-align:center;">GET</td>
-            <td>String titre </td>
-            <td>Permet de récupérer les informations d'une notice à partir de son titre</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/{id}</td>
-            <td style="text-align:center;">POST</td>
-            <td>
-                - CreateNoticeRequest request
-            <td>Permet de créer une notice en indiquant les données via une CreateNoticeRequest</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/</td>
-            <td style="text-align:center;">PUT</td>
-            <td>
-                - String id<br>
-                - EditNoticeRequest request
-            </td>
-            <td>Permet de modifier une notice en indiquant son ID et les les données à modifier via une EditNoticeRequest</td>
-        </tr>
-        <tr>
-            <td style="text-align:center;">/{id}</td>
-            <td style="text-align:center;">DELETE</td>
-            <td>
-                - String id
-            <td>Permet de supprimer une notice en indiquant son ID</td>
-        </tr>
-    </tbody>
-</table>
+### Avis (```NoticesController```)
+
+### Notices
+| Url                                          | Méthode | Paramètre d'URL                 | Corp de requête               | Description                                                                                                           |
+|----------------------------------------------|---------|---------------------------------|-------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| /companies/{companyId}/notices               | GET     | companyId: string               | Non                           | Permet de récupérer les informations de toutes les avis                                                               |
+| /companies/{companyId}/notices/{id}          | GET     | companyId: string, id: string   | Non                           | Permet de récupérer les informations de toutes les avis                                                               |
+| /companies/{companyId}/notices/title/{title} | GET     | companyId: string, name: string | Non                           | Permet de récupérer les informations d'une notice à partir de son titre                                               |
+| /companies/{companyId}/notices               | POST    | companyId: string               | Oui ```CreateNoticeRequest``` | Permet de créer un avis en indiquant les données via une ```CreateNoticeRequest```                                    |
+| /companies/{companyId}/notices/{id}          | PUT     | companyId: string, id: string   | Oui ```EditNoticeRequest```   | Permet de modifier un avis en indiquant son identifiant et les les données à modifier via une ```EditNoticeRequest``` |
+| /companies/{companyId}/notices/{id}          | DELETE  | companyId: string, id: string   | Non                           | Permet de supprimer un avis en indiquant son identifiant                                                              |
+
+
+
