@@ -42,6 +42,7 @@ les opérations passent via des pipelines d'agrégation.
 
 Les classes correspondantes sont définies dans le package ```fr.pangolins.leProPlusPlus.controller```.
 Vous trouverez ci-dessous les tableaux récapitulant les différentes routes disponibles
+Une collection postman est disponible [ici](/doc/ProPlusPlus-API.postman_collection.json) (collection exportée en version 2.1).
 
 ### Entreprise (```CompaniesController```)
 

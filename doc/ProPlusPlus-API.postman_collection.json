@@ -1,0 +1,352 @@
+{
+	"info": {
+		"_postman_id": "3c878c00-0a57-4a4a-925e-615342ab8751",
+		"name": "ProPlusPlus-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "Compagnies/Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/companies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compagnies/Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/companies/62985c2eb2f66a6b0aba7f33",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"62985c2eb2f66a6b0aba7f33"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compagnies/Get By Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/companies/name/jeanmichelpolnareff",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"name",
+								"jeanmichelpolnareff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compagnies/Search",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/companies/name/jeanmichelpolnareff",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"name",
+								"jeanmichelpolnareff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compagnies/Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Jacquouille la Fripouille\",\n    \"type\": {\n        \"name\": \"Gros comique...\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/companies",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compagnies/Edit",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Cogip2\",\n    \"type\": {\n        \"name\": \"Réunions cravate/chaussettes55\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/companies/62a1eabb63cb70379b477992",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"62a1eabb63cb70379b477992"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Compagnies/Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/companies/{{companyId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Noticies",
+			"item": [
+				{
+					"name": "Noticies/GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/companies/{{companyId}}/notices",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}",
+								"notices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Noticies/GetById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/companies/{{companyId}}/notices/62b40cdb0e30223045a83112",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}",
+								"notices",
+								"62b40cdb0e30223045a83112"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Noticies/GetByTitle",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/companies/{{companyId}}/notices/title/Avis 1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}",
+								"notices",
+								"title",
+								"Avis 1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Noticies/Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Avis 1\",\n    \"content\": \"Fusce at cursus libero. Nunc a enim eleifend, rhoncus eros id, eleifend sapien. Nulla rutrum vestibulum est a tristique. Praesent varius eros eget aliquet lobortis. Fusce ultricies suscipit fermentum. Vivamus suscipit nisi nec lacus interdum, non volutpat leo efficitur. Donec in elit luctus, consequat elit a, imperdiet nibh. Praesent mollis, orci vitae facilisis luctus, odio felis dignissim ex, tempus imperdiet libero leo sed dolor. Morbi vitae ex aliquam, fermentum dui ac, congue libero. Suspendisse non nunc vitae purus tempus scelerisque a a mi. Cras molestie gravida porttitor. Duis et aliquam lorem. Vivamus auctor est vitae elit convallis rhoncus. Nam feugiat eleifend risus, at accumsan ipsum malesuada vitae.\",\n    \"mark\": 666,\n    \"authorId\": \"62aae0734d640b4d28388c10\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/companies/{{companyId}}/notices",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}",
+								"notices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Noticies/Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Avis 2\",\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum facilisis erat nec orci sollicitudin volutpat. Nunc ut nibh vitae ex mattis viverra in eu risus. Donec venenatis tristique gravida. Quisque vehicula ex elit. Aenean in eros convallis sapien semper laoreet tempor at libero. Integer sit amet arcu posuere, ullamcorper urna eget, varius erat. Integer eu feugiat erat. Mauris imperdiet volutpat cursus. Integer aliquet commodo malesuada. Donec dignissim augue sit amet pellentesque pellentesque. Donec in rhoncus metus. Aenean lacinia tellus ac mauris imperdiet, et suscipit odio ullamcorper. In rhoncus iaculis ligula, nec dapibus nibh auctor sed. Vestibulum finibus, risus et gravida porttitor, dolor ante laoreet justo, vel accumsan diam nisl congue risus. Morbi ut leo vulputate, aliquam dui a, vehicula libero.\",\n    \"mark\": 45,\n    \"authorId\": \"62a1eabf63cb70379b477993\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/companies/{{companyId}}/notices/{{noticeId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}",
+								"notices",
+								"{{noticeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Noticies/Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Avis 2\",\n    \"content\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum facilisis erat nec orci sollicitudin volutpat. Nunc ut nibh vitae ex mattis viverra in eu risus. Donec venenatis tristique gravida. Quisque vehicula ex elit. Aenean in eros convallis sapien semper laoreet tempor at libero. Integer sit amet arcu posuere, ullamcorper urna eget, varius erat. Integer eu feugiat erat. Mauris imperdiet volutpat cursus. Integer aliquet commodo malesuada. Donec dignissim augue sit amet pellentesque pellentesque. Donec in rhoncus metus. Aenean lacinia tellus ac mauris imperdiet, et suscipit odio ullamcorper. In rhoncus iaculis ligula, nec dapibus nibh auctor sed. Vestibulum finibus, risus et gravida porttitor, dolor ante laoreet justo, vel accumsan diam nisl congue risus. Morbi ut leo vulputate, aliquam dui a, vehicula libero.\",\n    \"mark\": 45,\n    \"authorId\": \"62a1eabf63cb70379b477993\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/companies/{{companyId}}/notices/{{noticeId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"companies",
+								"{{companyId}}",
+								"notices",
+								"{{noticeId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "companyId",
+			"value": "62aae0734d640b4d28388c10"
+		},
+		{
+			"key": "noticeId",
+			"value": "62b40cdb0e30223045a83112"
+		}
+	]
+}
