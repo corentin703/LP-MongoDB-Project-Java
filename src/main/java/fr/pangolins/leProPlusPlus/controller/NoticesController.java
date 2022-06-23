@@ -16,13 +16,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Validated
 @RestController
-@RequestMapping("/notices")
+@RequestMapping("/companies/{companyId}/notices")
 public class NoticesController {
     private final NoticeRepository noticeRepository;
     private final CompanyRepository companyRepository;
@@ -42,13 +43,16 @@ public class NoticesController {
      * @return une ResponseEntity avec la liste des NoticeResponse
      */
     @RequestMapping(method = RequestMethod.GET)
-    public @ResponseBody ResponseEntity<List<NoticeResponse>> getAll() {
-        List<Notice> notices = noticeRepository.findAll();
+    public @ResponseBody ResponseEntity<List<NoticeResponse>> getAll(
+        @PathVariable(name = "companyId") String companyId
+    ) {
+        Company company = findCompanyByStrObjectId(companyId);
+        List<Notice> notices = company.getNotices();
         notices.forEach(noticeSchemaVersioning::run);
 
-        return new ResponseEntity<>(
-                notices.stream().map(NoticeResponse::new).collect(Collectors.toList()),
-                HttpStatus.OK
+        return new ResponseEntity<List<NoticeResponse>>(
+            notices.stream().map(NoticeResponse::new).collect(Collectors.toList()),
+            HttpStatus.OK
         );
     }
 
@@ -111,16 +115,42 @@ public class NoticesController {
      * @param request la request comprenant les informations d'une notice
      */
     @PostMapping
-    public ResponseEntity<NoticeResponse> create(@RequestBody CreateNoticeRequest request) {
-        Notice newNotice = new Notice();
-        newNotice.setTitle(request.getTitle());
+    public ResponseEntity<NoticeResponse> create(
+        @PathVariable(name = "companyId") String companyId,
+        @RequestBody CreateNoticeRequest request
+    ) {
+        try {
+            Company company = findCompanyByStrObjectId(companyId);
 
-        newNotice = noticeRepository.insert(newNotice);
+            Notice newNotice = new Notice();
+            newNotice.setTitle(request.getTitle());
+            newNotice.setContent(request.getContent());
+            newNotice.setMark(request.getMark());
+            newNotice.setAuthor(findCompanyByStrObjectId(request.getAuthorId()));
+            newNotice = noticeRepository.insert(newNotice);
 
-        return new ResponseEntity<>(
+            List<Notice> notices = company.getNotices();
+            if (notices == null)
+                notices = new ArrayList<>();
+
+            Notice denormalizedNotice = new Notice();
+            denormalizedNotice.setId(newNotice.getId());
+            denormalizedNotice.setAuthor(newNotice.getAuthor());
+
+            notices.add(denormalizedNotice);
+            company.setNotices(notices);
+            companyRepository.save(company);
+
+            return new ResponseEntity<>(
                 new NoticeResponse(newNotice),
                 HttpStatus.CREATED
-        );
+            );
+        } catch (Exception e) {
+            System.out.println(e);
+            throw e;
+        }
+
+
     }
 
     /**
