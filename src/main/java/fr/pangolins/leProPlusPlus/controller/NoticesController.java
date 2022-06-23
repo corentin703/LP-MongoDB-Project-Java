@@ -6,7 +6,6 @@ import fr.pangolins.leProPlusPlus.domain.exception.entities.EntityNotFoundExcept
 import fr.pangolins.leProPlusPlus.domain.exception.entities.InvalidObjectIdException;
 import fr.pangolins.leProPlusPlus.domain.schemaVersioning.NoticeSchemaVersioning;
 import fr.pangolins.leProPlusPlus.repository.CompanyRepository;
-import fr.pangolins.leProPlusPlus.repository.NoticeRepository;
 import fr.pangolins.leProPlusPlus.requests.notices.CreateNoticeRequest;
 import fr.pangolins.leProPlusPlus.requests.notices.EditNoticeRequest;
 import fr.pangolins.leProPlusPlus.responses.NoticeResponse;
@@ -25,15 +24,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/companies/{companyId}/notices")
 public class NoticesController {
-    private final NoticeRepository noticeRepository;
     private final CompanyRepository companyRepository;
     private final NoticeSchemaVersioning noticeSchemaVersioning;
 
     public NoticesController(
-        NoticeRepository noticeRepository,
         CompanyRepository companyRepository,
         NoticeSchemaVersioning noticeSchemaVersioning) {
-        this.noticeRepository = noticeRepository;
         this.companyRepository = companyRepository;
         this.noticeSchemaVersioning = noticeSchemaVersioning;
     }
@@ -50,13 +46,11 @@ public class NoticesController {
         List<Notice> notices = company.getNotices();
         notices.forEach(noticeSchemaVersioning::run);
 
-        return new ResponseEntity<List<NoticeResponse>>(
-            notices.stream().map(NoticeResponse::new).collect(Collectors.toList()),
-            HttpStatus.OK
+        return new ResponseEntity<>(
+                notices.stream().map(NoticeResponse::new).collect(Collectors.toList()),
+                HttpStatus.OK
         );
     }
-
-    //
 
     /**
      * GetById permet de recupérer une NoticeResponse suivant un id donné
@@ -64,48 +58,45 @@ public class NoticesController {
      * @param id l'id de la comany qu'on souhaite récupérer
      */
     @GetMapping("/{id}")
-    public ResponseEntity<NoticeResponse> getById(@PathVariable String id){
-        Optional<Notice> notice;
-
-        try {
-            notice = noticeRepository.findById(new ObjectId(id));
-        } catch (IllegalArgumentException e) {
-            throw new InvalidObjectIdException(id);
-        }
-
-        if (notice.isEmpty())
-            throw new EntityNotFoundException(id);
-
-        noticeSchemaVersioning.run(notice.get());
+    public ResponseEntity<NoticeResponse> getById(
+        @PathVariable(name = "companyId") String companyId,
+        @PathVariable(name = "id") String id
+    ){
+        Notice notice = findNoticeByStrObjectId(companyId, id);
 
         return new ResponseEntity<>(
-                new NoticeResponse(notice.get()),
-                HttpStatus.OK
+            new NoticeResponse(notice),
+            HttpStatus.OK
         );
     }
+
     /**
      * GetByTitle permet de recupérer une notice via une noticeResponse suivant un tittre donné
      * @return une ResponseEntity avec la NoticeResponse correspondante au titre fourni
      * @param title le titre de la notice qu'on souhaite récupérer
      */
     @GetMapping("title/{title}")
-    public ResponseEntity<NoticeResponse> getByTitle(@PathVariable String title){
-        Optional<Notice> notice;
+    public ResponseEntity<NoticeResponse> getByTitle(
+        @PathVariable(name = "companyId") String companyId,
+        @PathVariable(name = "title") String title
+    ){
+        Notice notice;
 
         try {
-            notice = noticeRepository.findById(new ObjectId(title));
+            List<Notice> foundNotices = companyRepository.getNoticeByTitle(new ObjectId(companyId), title);
+
+            if (foundNotices.size() == 0) {
+                throw new EntityNotFoundException(title);
+            }
+
+            notice = foundNotices.get(0);
         } catch (IllegalArgumentException e) {
             throw new InvalidObjectIdException(title);
         }
 
-        if (notice.isEmpty())
-            throw new EntityNotFoundException(title);
-
-        noticeSchemaVersioning.run(notice.get());
-
         return new ResponseEntity<>(
-                new NoticeResponse(notice.get()),
-                HttpStatus.OK
+            new NoticeResponse(notice),
+            HttpStatus.OK
         );
     }
 
@@ -119,38 +110,27 @@ public class NoticesController {
         @PathVariable(name = "companyId") String companyId,
         @RequestBody CreateNoticeRequest request
     ) {
-        try {
-            Company company = findCompanyByStrObjectId(companyId);
+        Company company = findCompanyByStrObjectId(companyId);
 
-            Notice newNotice = new Notice();
-            newNotice.setTitle(request.getTitle());
-            newNotice.setContent(request.getContent());
-            newNotice.setMark(request.getMark());
-            newNotice.setAuthor(findCompanyByStrObjectId(request.getAuthorId()));
-            newNotice = noticeRepository.insert(newNotice);
+        Notice newNotice = new Notice();
+        newNotice.setId(new ObjectId());
+        newNotice.setTitle(request.getTitle());
+        newNotice.setContent(request.getContent());
+        newNotice.setMark(request.getMark());
+        newNotice.setAuthor(findCompanyByStrObjectId(request.getAuthorId()));
 
-            List<Notice> notices = company.getNotices();
-            if (notices == null)
-                notices = new ArrayList<>();
+        List<Notice> notices = company.getNotices();
+        if (notices == null)
+            notices = new ArrayList<>();
 
-            Notice denormalizedNotice = new Notice();
-            denormalizedNotice.setId(newNotice.getId());
-            denormalizedNotice.setAuthor(newNotice.getAuthor());
+        notices.add(newNotice);
+        company.setNotices(notices);
+        companyRepository.save(company);
 
-            notices.add(denormalizedNotice);
-            company.setNotices(notices);
-            companyRepository.save(company);
-
-            return new ResponseEntity<>(
-                new NoticeResponse(newNotice),
-                HttpStatus.CREATED
-            );
-        } catch (Exception e) {
-            System.out.println(e);
-            throw e;
-        }
-
-
+        return new ResponseEntity<>(
+            new NoticeResponse(newNotice),
+            HttpStatus.CREATED
+        );
     }
 
     /**
@@ -161,44 +141,41 @@ public class NoticesController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<NoticeResponse> update(
-        @PathVariable String id,
+        @PathVariable(name = "companyId") String companyId,
+        @PathVariable(name = "id") String id,
         @RequestBody EditNoticeRequest request
     ) {
-        Optional<Notice> notice;
-
-        try {
-            notice = noticeRepository.findById(new ObjectId(id));
-        } catch (IllegalArgumentException e) {
-            throw new InvalidObjectIdException(id);
-        }
-
-        if (notice.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        Notice updatedNotice = notice.get();
+        Company company = findCompanyByStrObjectId(companyId);
+        Notice notice = findNoticeByStrObjectId(companyId, id);
 
         if (request.getTitle() != null)
-            updatedNotice.setTitle(request.getTitle());
+            notice.setTitle(request.getTitle());
 
         if (request.getAuthorId() != null)
         {
-            updatedNotice.setAuthor(
-                findCompanyByStrObjectId(
-                    request.getAuthorId()
-                )
+            notice.setAuthor(
+                    findCompanyByStrObjectId(
+                            request.getAuthorId()
+                    )
             );
         }
 
         if (request.getContent() != null) {
-            updatedNotice.setContent(request.getContent());
+            notice.setContent(request.getContent());
         }
 
         if (request.getMark() != null) {
-            updatedNotice.setMark(request.getMark());
+            notice.setMark(request.getMark());
         }
 
-        noticeSchemaVersioning.run(updatedNotice);
-        noticeRepository.save(updatedNotice);
+        List<Notice> notices = company.getNotices()
+                .stream()
+                .filter(it -> !it.getId().toHexString().equals(id))
+                .collect(Collectors.toList());
+
+        notices.add(notice);
+        company.setNotices(notices);
+        companyRepository.save(company);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -209,20 +186,24 @@ public class NoticesController {
      * @return une ResponseEntity avec le code de retour uniquement
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
-        Optional<Notice> notice;
+    public ResponseEntity<Void> delete(
+        @PathVariable(name = "companyId") String companyId,
+        @PathVariable(name = "id") String id
+    ) {
+        Company company = findCompanyByStrObjectId(companyId);
 
-        try {
-            notice = noticeRepository.findById(new ObjectId(id));
-        } catch (IllegalArgumentException e) {
-            throw new InvalidObjectIdException(id);
-        }
+        List<Notice> notices = company.getNotices()
+            .stream()
+            .filter(it -> !it.getId().toHexString().equals(id))
+            .collect(Collectors.toList());
 
-        if (notice.isEmpty()) {
+        if (company.getNotices().size() == notices.size()) {
             throw new EntityNotFoundException(id);
         }
 
-        noticeRepository.delete(notice.get());
+        company.setNotices(notices);
+        companyRepository.save(company);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
@@ -232,13 +213,42 @@ public class NoticesController {
      * @return une company
      */
     private Company findCompanyByStrObjectId(String strObjId) {
-        ObjectId objectId = new ObjectId(strObjId);
-        Optional<Company> company = companyRepository.findById(objectId);
+        try {
+            ObjectId objectId = new ObjectId(strObjId);
+            Optional<Company> company = companyRepository.findById(objectId);
 
-        if (company.isEmpty()) {
-            throw new EntityNotFoundException(strObjId);
+            if (company.isEmpty()) {
+                throw new EntityNotFoundException(strObjId);
+            }
+
+            return company.get();
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectIdException(strObjId);
+        }
+    }
+
+    private Notice findNoticeByStrObjectId(String companyStrObjId, String noticeStrObjectId) {
+        ObjectId companyId;
+        ObjectId noticeId;
+
+        try {
+            companyId = new ObjectId(companyStrObjId);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectIdException(companyStrObjId);
         }
 
-        return company.get();
+        try {
+            noticeId = new ObjectId(noticeStrObjectId);
+        } catch (IllegalArgumentException e) {
+            throw new InvalidObjectIdException(noticeStrObjectId);
+        }
+
+        List<Notice> foundNotices = companyRepository.getNoticeById(companyId, noticeId);
+
+        if (foundNotices.size() == 0) {
+            throw new EntityNotFoundException(noticeStrObjectId);
+        }
+
+        return foundNotices.get(0);
     }
 }

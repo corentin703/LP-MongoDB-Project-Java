@@ -1,7 +1,6 @@
 package fr.pangolins.leProPlusPlus.domain.schemaVersioning;
 
 import fr.pangolins.leProPlusPlus.domain.entities.Notice;
-import fr.pangolins.leProPlusPlus.repository.CompanyRepository;
 import fr.pangolins.leProPlusPlus.repository.NoticeRepository;
 import org.springframework.stereotype.Service;
 

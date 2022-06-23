@@ -1,19 +1,20 @@
 package fr.pangolins.leProPlusPlus.domain.entities;
 
+import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("notices")
+//@Document("notices")
 public class Notice extends EntityBase {
-    @Id
+//    @BsonId
     private ObjectId id;
 
     private String title;
     private String content;
     private float mark;
-    @DBRef
+//    @DBRef
     private Company author;
 
     public Notice() {
