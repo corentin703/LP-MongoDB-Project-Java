@@ -1,4 +1,11 @@
-# LP - Projet Mongo
+# Le ProPlusPlus
+Projet cours Client-Serveur LP Web.
+
+Fait par : 
+- Corentin VÉROT
+- Nicolas MORIN
+- Léo GRAVIER
+- Florian VIVET
 
 ### Objectif du projet 
 
@@ -49,7 +56,6 @@ Vous trouverez ci-dessous les tableaux récapitulant les différentes routes dis
 
 ### Avis (```NoticesController```)
 
-### Notices
 | Url                                          | Méthode | Paramètre d'URL                 | Corp de requête               | Description                                                                                                           |
 |----------------------------------------------|---------|---------------------------------|-------------------------------|-----------------------------------------------------------------------------------------------------------------------|
 | /companies/{companyId}/notices               | GET     | companyId: string               | Non                           | Permet de récupérer les informations de toutes les avis                                                               |
@@ -60,4 +66,14 @@ Vous trouverez ci-dessous les tableaux récapitulant les différentes routes dis
 | /companies/{companyId}/notices/{id}          | DELETE  | companyId: string, id: string   | Non                           | Permet de supprimer un avis en indiquant son identifiant                                                              |
 
 
+### Diagrammes de conception :
 
+#### MCD
+![MCD](./doc/resources/mcd.png)
+
+#### UML
+![UML](./doc/resources/uml.png)
+
+### Patron de conception NO-SQL
+
+Nous avons implémenté le patron du *Schema Versioning* au sein du service ```fr.pangolins.leProPlusPlus.domain.schemaVersioning.CompanySchemaVersioning```.
