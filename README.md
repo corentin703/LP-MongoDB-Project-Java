@@ -74,6 +74,12 @@ Vous trouverez ci-dessous les tableaux récapitulant les différentes routes dis
 #### UML
 ![UML](./doc/resources/uml.png)
 
+
 ### Patron de conception NO-SQL
 
 Nous avons implémenté le patron du *Schema Versioning* au sein du service ```fr.pangolins.leProPlusPlus.domain.schemaVersioning.CompanySchemaVersioning```.
+
+
+### Index
+
+La colonne *name* de l'entité ```Company```  est indexée étant donné qu'une route est disponible pour rechercher une entreprise par nom.
