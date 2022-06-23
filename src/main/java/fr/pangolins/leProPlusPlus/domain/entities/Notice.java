@@ -6,15 +6,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-//@Document("notices")
 public class Notice extends EntityBase {
-//    @BsonId
+    @Id
     private ObjectId id;
 
     private String title;
     private String content;
     private float mark;
-//    @DBRef
+
+    @DBRef
     private Company author;
 
     public Notice() {

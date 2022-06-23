@@ -1,21 +1,37 @@
 # LP - Projet Mongo
 
-**Attention à ne pas utiliser le compte Google de Salva !**
+### Objectif du projet 
 
-[Lien doc ici](https://docs.google.com/document/d/1QGLIGBMOHpZHjhA14QnDS9C6bH6C9EwkgIuBTSKxG8E/edit?usp=sharing)
+Permettre la mise en relation d'entreprises entre elles en les regroupant 
+sur une plateforme commune où elles pourront échanger des avis entre elles.
 
-[Liens / Notation](http://clientserveur.milka.ovh/)
+### Fonctionnalités :
+- CRUD pour les entreprises (company)
+- CRUD pour les notes (notice)
+- Ajouter des notes aux entreprises
 
--   Project Goal : Permettre la mise en relation d'entreprises entre elles en le regroupant sur une plateforme commune où elles
-    pourront échanger des avis entre elles
--   Project Features :
-    -   CRUD pour les entreprises (company)
-    -   CRUD pour les notes (notice)
-    -   Ajouter des notes aux entreprises
+## Entités
 
-## Services
+Les classes correspondantes sont définies dans le package ```fr.pangolins.leProPlusPlus.domain.entities```.
 
-###  Companies
+### Entreprise (```Company```)
+Il s'agit du document principal. Le *repository* associé correspond à l'interface 
+```CompanyRepository```. 
+
+### Type d'entreprise (```CompanyType```)
+Second sous-document appartenant à une entreprise, représentant son type.
+
+### Avis (```Notice```)
+Cette entité correspond à un sous-document d'une entreprise, regroupant les avis concernant l'entreprise.
+Un avis contient une référence vers l'entreprise / client ayant émit l'avis
+Cette entité ne possède pas de repository dédié : 
+les opérations passent via des pipelines d'agrégation.
+
+## Services / Contrôleurs
+
+Les classes correspondantes sont définies dans le package ```fr.pangolins.leProPlusPlus.domain.entities```.
+
+### Entreprise (*Companies*)
 url : /companies
 
 <table>
