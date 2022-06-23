@@ -4,7 +4,6 @@ import fr.pangolins.leProPlusPlus.domain.entities.Company;
 import fr.pangolins.leProPlusPlus.domain.entities.Notice;
 import fr.pangolins.leProPlusPlus.domain.exception.entities.EntityNotFoundException;
 import fr.pangolins.leProPlusPlus.domain.exception.entities.InvalidObjectIdException;
-import fr.pangolins.leProPlusPlus.domain.schemaVersioning.NoticeSchemaVersioning;
 import fr.pangolins.leProPlusPlus.repository.CompanyRepository;
 import fr.pangolins.leProPlusPlus.requests.notices.CreateNoticeRequest;
 import fr.pangolins.leProPlusPlus.requests.notices.EditNoticeRequest;
@@ -25,13 +24,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/companies/{companyId}/notices")
 public class NoticesController {
     private final CompanyRepository companyRepository;
-    private final NoticeSchemaVersioning noticeSchemaVersioning;
 
-    public NoticesController(
-        CompanyRepository companyRepository,
-        NoticeSchemaVersioning noticeSchemaVersioning) {
+    public NoticesController(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
-        this.noticeSchemaVersioning = noticeSchemaVersioning;
     }
 
     /**
@@ -44,11 +39,10 @@ public class NoticesController {
     ) {
         Company company = findCompanyByStrObjectId(companyId);
         List<Notice> notices = company.getNotices();
-        notices.forEach(noticeSchemaVersioning::run);
 
         return new ResponseEntity<>(
-                notices.stream().map(NoticeResponse::new).collect(Collectors.toList()),
-                HttpStatus.OK
+            notices.stream().map(NoticeResponse::new).collect(Collectors.toList()),
+            HttpStatus.OK
         );
     }
 
@@ -154,9 +148,9 @@ public class NoticesController {
         if (request.getAuthorId() != null)
         {
             notice.setAuthor(
-                    findCompanyByStrObjectId(
-                            request.getAuthorId()
-                    )
+                findCompanyByStrObjectId(
+                    request.getAuthorId()
+                )
             );
         }
 
@@ -169,12 +163,13 @@ public class NoticesController {
         }
 
         List<Notice> notices = company.getNotices()
-                .stream()
-                .filter(it -> !it.getId().toHexString().equals(id))
-                .collect(Collectors.toList());
+            .stream()
+            .filter(it -> !it.getId().toHexString().equals(id))
+            .collect(Collectors.toList());
 
         notices.add(notice);
         company.setNotices(notices);
+
         companyRepository.save(company);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

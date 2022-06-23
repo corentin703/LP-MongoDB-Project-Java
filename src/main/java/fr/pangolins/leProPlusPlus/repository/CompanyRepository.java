@@ -13,9 +13,22 @@ import java.util.Optional;
 public interface CompanyRepository extends MongoRepository<Company, ObjectId> {
    Optional<Company> findByName(String name);
 
+   /**
+    * Cherche une entreprise avec un nom donné
+    *
+    * @param name Nom de l'entreprise recherchée
+    * @return Entreprise trouvée (= null si introuvable)
+    */
    @Query(value = "{'name': {$regex : ?0, $options: 'i'}}")
-   List<Company> findCompaniesForName(String name);
+   List<Company> findCompaniesByName(String name);
 
+   /**
+    * Récupère un avis avec un _id donné
+    *
+    * @param companyId Id de l'entreprise
+    * @param noticesId Id de l'avis
+    * @return Résultat de l'agrégation
+    */
    @Aggregation(pipeline = {
      "{ $match: { '_id': ?0 }, }",
      "{ $unwind: '$notices' }",
@@ -24,6 +37,13 @@ public interface CompanyRepository extends MongoRepository<Company, ObjectId> {
    })
    List<Notice> getNoticeById(ObjectId companyId, ObjectId noticesId);
 
+   /**
+    * Récupère un avis avec un titre donné
+    *
+    * @param companyId Id de l'entreprise
+    * @param title Titre à rechercher
+    * @return Résultat de l'agrégation
+    */
    @Aggregation(pipeline = {
      "{ $match: { '_id': ?0 }, }",
      "{ $unwind: '$notices' }",

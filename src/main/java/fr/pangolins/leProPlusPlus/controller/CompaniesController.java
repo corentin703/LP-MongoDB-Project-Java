@@ -109,7 +109,7 @@ public class CompaniesController {
         List<Company> companies;
 
         try {
-            companies = companyRepository.findCompaniesForName(name);
+            companies = companyRepository.findCompaniesByName(name);
         } catch (IllegalArgumentException e) {
             throw new InvalidObjectIdException(name);
         }
