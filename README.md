@@ -7,6 +7,8 @@ Fait par :
 - Léo GRAVIER
 - Florian VIVET
 
+La JavaDoc se trouve [ici](/doc/JavaDoc).
+
 ### Objectif du projet 
 
 Permettre la mise en relation d'entreprises entre elles en les regroupant 

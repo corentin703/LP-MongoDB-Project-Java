@@ -32,8 +32,9 @@ public class CompaniesController {
     }
 
     /**
-     * GetAll permet de recupérer l'ensemble des companies via des  CompanyResponses
-     * @return une ResponseEntity avec la liste des CompanyResponse
+     * Récupère l'ensemble des entreprises
+     *
+     * @return ResponseEntity contenant la liste de toutes les entreprises
      */
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<List<CompanyResponse>> getAll() {
@@ -47,9 +48,10 @@ public class CompaniesController {
     }
 
     /**
-     * GetById permet de récupérer une company via une companyResponse suivant un id donné
-     * @return une ResponseEntity avec la CompanyResponse associée
-     * @param id l'id de la company qu'on souhaite récupérer
+     * Récupère une entreprise suivant un id donné
+     *
+     * @param id Id de l'entreprise qu'on souhaite récupérer
+     * @return ResponseEntity contenant l'entreprise associée
      */
     @GetMapping("/{id}")
     public ResponseEntity<CompanyResponse> getById(@PathVariable String id) {
@@ -73,9 +75,10 @@ public class CompaniesController {
     }
 
     /**
-     * GetByName permet de récupérer une company via une companyResponse suivant un nom donné
-     * @return une ResponseEntity avec la CompanyResponse correspondante au nom fourni
+     * Récupère une entreprise suivant un nom donné
+     *
      * @param name le nom de la company que l'on souhaite récupérer
+     * @return une ResponseEntity contenant l'entreprise correspondante au nom fourni
      */
     @GetMapping("name/{name}")
     public ResponseEntity<CompanyResponse> getByName(@PathVariable String name) {
@@ -99,10 +102,11 @@ public class CompaniesController {
     }
 
     /**
-     * Recherche de compagnies correspondant au nom partiel ou complet passé en paramètres.
+     * Recherche d'entreprises correspondant au nom partiel ou complet passé en paramètres.
+     *
      * La recherche est insensible à la casse.
-     * @param name le nom partiel ou complet des companies recherchées
-     * @return ResponseEntity<List<CompanyResponse>> une liste de companies correspondant à la chaîne passée en paramètres
+     * @param name Nom partiel ou complet des entreprise(s) recherchée(s)
+     * @return ResponseEntity&lt;List&lt;CompanyResponse&gt;&gt; une liste d'entreprises correspondant à la chaîne passée en paramètres
      */
     @GetMapping("search/{name}")
     public ResponseEntity<List<CompanyResponse>> searchByName(@PathVariable String name) {
@@ -121,9 +125,10 @@ public class CompaniesController {
     }
 
     /**
-     * Create permet de créer une company suivant une company request donnée
-     * @return une ResponseEntity avec la CompanyResponse créée
-     * @param request la request comprenant le nom et le type de la company qu'on souhaite créer
+     * Crée une entreprise
+     *
+     * @param request Corps de requête comportant le nom et le type de l'entreprise qu'on souhaite créer
+     * @return une ResponseEntity avec l'entreprise créée
      */
     @PostMapping
     public ResponseEntity<CompanyResponse> create(@RequestBody CreateCompanyRequest request) {
@@ -140,10 +145,11 @@ public class CompaniesController {
     }
 
     /**
-     * Update permet de mettre à jour une company
-     * @param id identifiant de la company
-     * @param request contient le nouveau nom et type de la company à mettre à jour
-     * @return une ResponseEntity avec le code de retour uniquement
+     * Mets à jour une entreprise
+     *
+     * @param id Identifiant de l'entreprise
+     * @param request Contient le nouveau nom et type de la company à mettre à jour
+     * @return ResponseEntity avec le code de retour uniquement
      */
     @PutMapping("/{id}")
     public ResponseEntity<CompanyResponse> update(
@@ -178,8 +184,9 @@ public class CompaniesController {
     }
 
     /**
-     * Delete permet de supprimer une company
-     * @param id identifiant de la company à supprimer
+     * Supprime une entreprise
+     *
+     * @param id Identifiant de l'entreprise à supprimer
      * @return une ResponseEntity avec le code de retour uniquement
      */
     @DeleteMapping("/{id}")

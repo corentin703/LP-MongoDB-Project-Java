@@ -30,8 +30,10 @@ public class NoticesController {
     }
 
     /**
-     * GetAll permet de recupérer l'ensemble des notices via des NoticeResponse
-     * @return une ResponseEntity avec la liste des NoticeResponse
+     * Récupère l'ensemble des avis
+     *
+     * @param companyId Identifiant de l'entreprise
+     * @return une ResponseEntity avec la liste des avis
      */
     @RequestMapping(method = RequestMethod.GET)
     public @ResponseBody ResponseEntity<List<NoticeResponse>> getAll(
@@ -47,9 +49,11 @@ public class NoticesController {
     }
 
     /**
-     * GetById permet de recupérer une NoticeResponse suivant un id donné
-     * @return une ResponseEntity avec la NoticeResponse associée
+     * Récupère un avis suivant un identifiant donné
+     *
+     * @param companyId Identifiant de l'entreprise
      * @param id l'id de la comany qu'on souhaite récupérer
+     * @return ResponseEntity avec l'avis associé
      */
     @GetMapping("/{id}")
     public ResponseEntity<NoticeResponse> getById(
@@ -65,9 +69,11 @@ public class NoticesController {
     }
 
     /**
-     * GetByTitle permet de recupérer une notice via une noticeResponse suivant un tittre donné
-     * @return une ResponseEntity avec la NoticeResponse correspondante au titre fourni
-     * @param title le titre de la notice qu'on souhaite récupérer
+     * Récupère un avis via une noticeResponse suivant un titre donné
+     *
+     * @param companyId Identifiant de l'entreprise
+     * @param title Titre de l'avis que l'on souhaite récupérer
+     * @return ResponseEntity avec l'avis correspondant au titre fourni
      */
     @GetMapping("title/{title}")
     public ResponseEntity<NoticeResponse> getByTitle(
@@ -95,9 +101,11 @@ public class NoticesController {
     }
 
     /**
-     * Create permet de créer une notice suivant une notice request donnée
-     * @return une ResponseEntity avec la NoticeResponse créée
+     * Crée un avis appartenant à une entreprise donnée
+     *
+     * @param companyId Identifiant de l'entreprise
      * @param request la request comprenant les informations d'une notice
+     * @return une ResponseEntity avec la NoticeResponse créée
      */
     @PostMapping
     public ResponseEntity<NoticeResponse> create(
@@ -128,7 +136,9 @@ public class NoticesController {
     }
 
     /**
-     * Update permet de mettre à jour une notice
+     * Mets à jour un avis
+     *
+     * @param companyId Identifiant de l'entreprise
      * @param id identifiant de la notice
      * @param request contient les informations de la notice à mettre à jour
      * @return une ResponseEntity avec le code de retour uniquement
@@ -176,7 +186,9 @@ public class NoticesController {
     }
 
     /**
-     * Delete permet de supprimer une notice
+     * Supprime un avis
+     *
+     * @param companyId Identifiant de l'entreprise
      * @param id identifiant de la notice à supprimer
      * @return une ResponseEntity avec le code de retour uniquement
      */
@@ -203,11 +215,12 @@ public class NoticesController {
     }
 
     /**
-     * Depuis un objectId on retourne une company
-     * @param strObjId l'objectId de la company
-     * @return une company
+     * Retourne l'entreprise correspondant à un identifiant donné
+     *
+     * @param strObjId L'ObjectId de l'entreprise (sous forme de chaîne hexadécimale)
+     * @return Entreprise correspondant à l'identifiant
      */
-    private Company findCompanyByStrObjectId(String strObjId) {
+    private Company findCompanyByStrObjectId(String strObjId) throws InvalidObjectIdException, EntityNotFoundException {
         try {
             ObjectId objectId = new ObjectId(strObjId);
             Optional<Company> company = companyRepository.findById(objectId);
@@ -222,7 +235,15 @@ public class NoticesController {
         }
     }
 
-    private Notice findNoticeByStrObjectId(String companyStrObjId, String noticeStrObjectId) {
+    /**
+     * Retourne l'avis correspondant à un identifiant donné
+     *
+     * @param companyStrObjId L'ObjectId de l'entreprise (sous forme de chaîne hexadécimale)
+     * @param noticeStrObjectId L'ObjectId de l'avis (sous forme de chaîne hexadécimale)
+     * @return Avis correspondant à l'identifiant
+     */
+    private Notice findNoticeByStrObjectId(String companyStrObjId, String noticeStrObjectId)
+        throws InvalidObjectIdException, EntityNotFoundException {
         ObjectId companyId;
         ObjectId noticeId;
 

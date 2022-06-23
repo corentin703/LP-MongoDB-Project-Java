@@ -1,0 +1,10 @@
+fr.pangolins.leProPlusPlus
+fr.pangolins.leProPlusPlus.controller
+fr.pangolins.leProPlusPlus.domain.entities
+fr.pangolins.leProPlusPlus.domain.exception.database
+fr.pangolins.leProPlusPlus.domain.exception.entities
+fr.pangolins.leProPlusPlus.domain.schemaVersioning
+fr.pangolins.leProPlusPlus.repository
+fr.pangolins.leProPlusPlus.requests.companies
+fr.pangolins.leProPlusPlus.requests.notices
+fr.pangolins.leProPlusPlus.responses

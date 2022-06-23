@@ -17,7 +17,11 @@ public class ProPlusPlusApplication {
 	}
 
 	/**
-	 * Surcharge du client MongoDB Spring pour ajouter la création automatique des indexes.
+	 * Surcharge du client MongoDB Spring pour ajouter la création automatique des index.
+	 *
+	 * @param mongoDbFactory Fabrique créant des instances de MongoDB
+	 * @param context Permets de faire le lien entre les entités java et celles présentes en base de données
+	 * @return Client MongoDB
 	 */
 	@Bean
 	public MongoTemplate mongoTemplate(MongoDatabaseFactory mongoDbFactory, MongoMappingContext context) {
